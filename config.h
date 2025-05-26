@@ -10,8 +10,7 @@ static const char unknown_str[] = "n/a";
 #define MAXLEN 2048
 
 /*
- * function            description                     argument (example)
- *
+ * function            description                     argument (example) *
  * battery_perc        battery percentage              battery name (BAT0)
  *                                                     NULL on OpenBSD/FreeBSD
  * battery_remaining   battery remaining HH:MM         battery name (BAT0)
@@ -68,8 +67,10 @@ const char vol[] = "pulsemixer --get-volume | cut -d ' ' -f1";
 
 static const struct arg args[] = {
 	/* function format          argument */
+	{ keymap,			"%s | ",		NULL	},
 	{ battery_state, 	"B: %s",    	"BAT0" 	},
 	{ battery_perc, 	"%s%% | ",    	"BAT0" 	},
 	{ run_command, 		"V: %s%% | ",    vol 	},
-	{ datetime, 		"%s",           "%d.%m.%y %R" },
+	{ wifi_essid,		"W: %s | ",		"wlan0"},
+	{ datetime, 		"%s",           "%d.%m.%Y %R" },
 };
