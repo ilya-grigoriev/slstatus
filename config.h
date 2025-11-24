@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* interval between updates (in ms) */
-const unsigned int interval = 1000;
+const unsigned int interval = 100;
 
 /* text to show if no value can be retrieved */
 static const char unknown_str[] = "n/a";
@@ -63,14 +63,17 @@ static const char unknown_str[] = "n/a";
  * wifi_perc           WiFi signal in percent          interface name (wlan0)
  */
 
-const char vol[] = "pulsemixer --get-volume | cut -d ' ' -f1";
+/* const char vol[] = "pulsemixer --get-volume | cut -d ' ' -f1"; */
+const char vol[] = "pactl list sinks | grep Volume | grep -v Base | rg -o --pcre2 '(?!Base)(\\d{1,3}%)' -r '$1' | tail -n 1";
+const char klayout[] = "swaymsg -t get_inputs | jq -r '.[] | select(.xkb_active_layout_name != \"\") | .xkb_active_layout_name' | head -n 1 | awk '{print tolower(substr($1, 0, 2))}'";
 
 static const struct arg args[] = {
 	/* function format          argument */
-	{ keymap,			"%s | ",		NULL	},
-	{ battery_state, 	"B: %s",    	"BAT0" 	},
-	{ battery_perc, 	"%s%% | ",    	"BAT0" 	},
-	{ run_command, 		"V: %s%% | ",    vol 	},
-	{ wifi_essid,		"W: %s | ",		"wlan0"},
-	{ datetime, 		"%s",           "%d.%m.%Y %R" },
+	/* { keymap,			"%s | ",		NULL	}, */
+	{ run_command,		"K: %s | ",		klayout			},
+	{ battery_state, 	"B: %s",    	"BAT0" 			},
+	{ battery_perc, 	"%s%% | ",    	"BAT0" 			},
+	{ run_command, 		"V: %s | ",    	vol 			},
+	{ wifi_essid,		"W: %s | ",		"wlan0"			},
+	{ datetime, 		"%s",           "%d.%m.%Y %R" 	},
 };
